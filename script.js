@@ -80,7 +80,7 @@ if (speechRecognition) { // Check if SpeechRecognition is supported
             window.open("calculator://");
         } else if (message.includes("open whatsapp")) {
             speak("Opening whatsapp...");
-            window.open("whatsapp://");
+            window.open("http://www.whatsapp.com", "_blank");
         } else if (message.includes("time")){
             let time= new Date().toLocaleDateString(undefined, {hour:"numeric",minute:"numeric"})
             speak(time)
