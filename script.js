@@ -53,7 +53,7 @@ if (speechRecognition) { // Check if SpeechRecognition is supported
         
         if (message.includes("hello") || message.includes("hey")) {
             speak("Hello sir, I am Shiffraa. What can I help you with?");
-        } else if (message.includes("who are you?") || message.includes("hu r u")) {
+        } else if (message.includes("Who are you?") || message.includes("hu r u")) {
             speak("I am your virtual assistant, created by Rohit sir.");
         } else if (message.includes("how are you") || message.includes("hau r u")) {
             speak("Much better now that you are with me.");
