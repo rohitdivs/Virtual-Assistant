@@ -7,7 +7,7 @@ function speak(text) {
     text_speak.rate = 1;
     text_speak.pitch = 1;
     text_speak.volume = 1;
-    text_speak.lang = "hi-GB"; // Assuming you want Hindi, GB may be a typo?
+    text_speak.lang = "hi-IN"; // Assuming you want Hindi, for India
     window.speechSynthesis.speak(text_speak);
 }
 
@@ -33,12 +33,18 @@ window.addEventListener('load', () => {
 let speechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 if (speechRecognition) { // Check if SpeechRecognition is supported
     let recognition = new speechRecognition();
-    
+
     recognition.onresult = (event) => {
         let currentIndex = event.resultIndex;
         let transcript = event.results[currentIndex][0].transcript.toLowerCase(); // Convert to lowercase
         content.innerText = transcript;
         takeCommand(transcript.toLowerCase());
+    };
+
+    recognition.onend = () => {
+        // Restart recognition after it's done to listen for more commands
+        btn.style.display = "flex"; // Ensure button is visible for new commands
+        voice.style.display = "none";
     };
 
     btn.addEventListener('click', () => {
@@ -48,12 +54,9 @@ if (speechRecognition) { // Check if SpeechRecognition is supported
     });
 
     function takeCommand(message) {
-        btn.style.display = "flex";
-        voice.style.display = "none";
-        
         if (message.includes("hello") || message.includes("hey")) {
             speak("Hello sir, I am Shiffraa. What can I help you with?");
-        } else if (message.includes("Who are you") || message.includes("hu r u")) {
+        } else if (message.includes("who are you") || message.includes("hu r u")) {
             speak("I am your virtual assistant, created by Rohit sir.");
         } else if (message.includes("how are you") || message.includes("hau r u")) {
             speak("Much better now that you are with me.");
@@ -76,20 +79,17 @@ if (speechRecognition) { // Check if SpeechRecognition is supported
             speak("Opening Snapchat...");
             window.open("http://www.Snapchat.com", "_blank");
         } else if (message.includes("open calculator")) {
-            speak("Opening calculator...");
-            window.open("calculator://");
+            speak("Sorry, I cannot open the calculator on this device.");
         } else if (message.includes("open whatsapp")) {
-            speak("Opening whatsapp...");
+            speak("Opening WhatsApp...");
             window.open("http://www.whatsapp.com", "_blank");
-        } else if (message.includes("time")){
-            let time= new Date().toLocaleDateString(undefined, {hour:"numeric",minute:"numeric"})
-            speak(time)
-        } else if (message.includes("date")){
-            let date= new Date().toLocaleDateString(undefined, {day:"numeric",month:"short"})
-            speak(date)
-        }
-        else {
-            // Clean up the message by replacing "shifra" or "shipra"
+        } else if (message.includes("time")) {
+            let time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            speak(`The current time is ${time}`);
+        } else if (message.includes("date")) {
+            let date = new Date().toLocaleDateString(undefined, { day: "numeric", month: "short" });
+            speak(`Today is ${date}`);
+        } else {
             let cleanedMessage = message.replace(/shifra|shipra/g, "").trim();
             let finalText = `This is what I found on the internet regarding ${cleanedMessage}`;
             speak(finalText);
